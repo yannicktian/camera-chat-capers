@@ -1,8 +1,8 @@
-import { useState, useRef, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Video, VideoOff, Camera } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useState, useRef, useCallback, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Video, VideoOff, Camera } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface VideoRecorderProps {
   onRecordingComplete: (videoBlob: Blob) => void;
@@ -20,7 +20,7 @@ export const VideoRecorder = ({
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [hasPermission, setHasPermission] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordedChunksRef = useRef<Blob[]>([]);
@@ -28,26 +28,28 @@ export const VideoRecorder = ({
   const startCamera = useCallback(async () => {
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user' },
+        video: { facingMode: "user" },
         audio: true,
       });
-      
+
       setStream(mediaStream);
       setHasPermission(true);
       setError(null);
-      
+
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
       }
     } catch (err) {
-      console.error('Error accessing camera:', err);
-      setError('Camera access denied. Please allow camera permissions to record your response.');
+      console.error("Error accessing camera:", err);
+      setError(
+        "Camera access denied. Please allow camera permissions to record your response."
+      );
     }
   }, []);
 
   const stopCamera = useCallback(() => {
     if (stream) {
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach((track) => track.stop());
       setStream(null);
     }
   }, [stream]);
@@ -56,11 +58,11 @@ export const VideoRecorder = ({
     if (!stream) return;
 
     recordedChunksRef.current = [];
-    
+
     const mediaRecorder = new MediaRecorder(stream, {
-      mimeType: 'video/webm',
+      mimeType: "video/webm",
     });
-    
+
     mediaRecorderRef.current = mediaRecorder;
 
     mediaRecorder.ondataavailable = (event) => {
@@ -71,7 +73,7 @@ export const VideoRecorder = ({
 
     mediaRecorder.onstop = () => {
       const videoBlob = new Blob(recordedChunksRef.current, {
-        type: 'video/webm',
+        type: "video/webm",
       });
       onRecordingComplete(videoBlob);
     };
@@ -86,6 +88,12 @@ export const VideoRecorder = ({
       onRecordingStop();
     }
   }, [isRecording, onRecordingStop]);
+
+  useEffect(() => {
+    if (videoRef.current && stream) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [stream]);
 
   if (error) {
     return (
@@ -109,7 +117,10 @@ export const VideoRecorder = ({
         <p className="text-muted-foreground mb-4">
           We need access to your camera to record your video response.
         </p>
-        <Button onClick={startCamera} className="bg-primary hover:bg-primary/90">
+        <Button
+          onClick={startCamera}
+          className="bg-primary hover:bg-primary/90"
+        >
           Enable Camera
         </Button>
       </Card>
@@ -127,7 +138,7 @@ export const VideoRecorder = ({
             playsInline
             className="w-full h-full object-cover"
           />
-          
+
           {isRecording && (
             <div className="absolute top-4 left-4 flex items-center gap-2 bg-recording/90 text-recording-foreground px-3 py-1 rounded-full">
               <div className="w-2 h-2 bg-recording-foreground rounded-full animate-pulse" />
@@ -154,7 +165,7 @@ export const VideoRecorder = ({
             <Video className="h-6 w-6" />
           )}
         </Button>
-        
+
         {hasPermission && (
           <Button
             onClick={stopCamera}
