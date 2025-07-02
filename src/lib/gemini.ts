@@ -16,8 +16,7 @@ export const deprecatedUploadFileToGemini = async (
   });
   console.log("Uploaded.");
   console.log(`Getting... ${uploadedFile.name}`);
-  //   let getFile = await client.files.get({ name: uploadedFile.name });
-  let getFile = await client.files.get({ name: "files/gd0rzll6vxxw" });
+  let getFile = await client.files.get({ name: uploadedFile.name });
   while (getFile.state === "PROCESSING") {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     getFile = await client.files.get({ name: uploadedFile.name });
@@ -71,7 +70,7 @@ Analyse l'entretien vidéo pour en ressortir les éléments suivants en JSON uni
 
 export async function analyzeInterview(videoBlob: Blob) {
   // Uncomment this to upload file to Gemini
-  // const geminiFile = await deprecatedUploadFileToGemini(videoBlob);
+  const geminiFile = await deprecatedUploadFileToGemini(videoBlob);
 
   const geminiBlob = await blobToGeminiBlob(videoBlob);
   console.log("geminiBlob", geminiBlob);
@@ -91,12 +90,12 @@ export async function analyzeInterview(videoBlob: Blob) {
         role: "user",
         parts: [
           {
-            inlineData: geminiBlob,
+            // inlineData: geminiBlob,
             // Uncomment this to use the Gemini file data instead of the inline data
-            // fileData: {
-            //   mimeType: geminiFile.mimeType,
-            //   fileUri: geminiFile.uri,
-            // },
+            fileData: {
+              mimeType: geminiFile.mimeType,
+              fileUri: geminiFile.uri,
+            },
           },
         ],
       },

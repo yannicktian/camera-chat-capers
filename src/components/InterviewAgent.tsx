@@ -13,27 +13,27 @@ const INTERVIEW_QUESTIONS = [
     question: "Tell me about yourself and your background.",
     category: "Introduction",
   },
-  {
-    id: 2,
-    question: "What interests you most about this opportunity?",
-    category: "Motivation",
-  },
-  {
-    id: 3,
-    question:
-      "Describe a challenging project you've worked on and how you overcame obstacles.",
-    category: "Experience",
-  },
-  {
-    id: 4,
-    question: "Where do you see yourself in the next 5 years?",
-    category: "Goals",
-  },
-  {
-    id: 5,
-    question: "What questions do you have for us?",
-    category: "Closing",
-  },
+  // {
+  //   id: 2,
+  //   question: "What interests you most about this opportunity?",
+  //   category: "Motivation",
+  // },
+  // {
+  //   id: 3,
+  //   question:
+  //     "Describe a challenging project you've worked on and how you overcame obstacles.",
+  //   category: "Experience",
+  // },
+  // {
+  //   id: 4,
+  //   question: "Where do you see yourself in the next 5 years?",
+  //   category: "Goals",
+  // },
+  // {
+  //   id: 5,
+  //   question: "What questions do you have for us?",
+  //   category: "Closing",
+  // },
 ];
 
 export const InterviewAgent = () => {
