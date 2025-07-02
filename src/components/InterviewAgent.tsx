@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { VideoRecorder } from './VideoRecorder';
-import { cn } from '@/lib/utils';
+import { useEffect, useState, useCallback } from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { VideoRecorder } from "./VideoRecorder";
+import { cn } from "@/lib/utils";
+import { analyzeInterview } from "../lib/gemini";
 
 const INTERVIEW_QUESTIONS = [
   {
@@ -19,7 +20,8 @@ const INTERVIEW_QUESTIONS = [
   },
   {
     id: 3,
-    question: "Describe a challenging project you've worked on and how you overcame obstacles.",
+    question:
+      "Describe a challenging project you've worked on and how you overcame obstacles.",
     category: "Experience",
   },
   {
@@ -39,12 +41,16 @@ export const InterviewAgent = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordings, setRecordings] = useState<{ [key: number]: Blob }>({});
   const [isComplete, setIsComplete] = useState(false);
+  const [analysis, setAnalysis] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const currentQuestion = INTERVIEW_QUESTIONS[currentQuestionIndex];
-  const progress = ((currentQuestionIndex + 1) / INTERVIEW_QUESTIONS.length) * 100;
+  const progress =
+    ((currentQuestionIndex + 1) / INTERVIEW_QUESTIONS.length) * 100;
 
   const handleRecordingComplete = (videoBlob: Blob) => {
-    setRecordings(prev => ({
+    setRecordings((prev) => ({
       ...prev,
       [currentQuestion.id]: videoBlob,
     }));
@@ -52,15 +58,48 @@ export const InterviewAgent = () => {
 
   const handleNext = () => {
     if (currentQuestionIndex < INTERVIEW_QUESTIONS.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       setIsComplete(true);
     }
   };
 
+  const handleAnalyze = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    setAnalysis("");
+    try {
+      const videoBlob = recordings[currentQuestion.id];
+      console.log(videoBlob);
+      const geminiResponse = await analyzeInterview(videoBlob);
+      console.log(geminiResponse);
+      const resultText = JSON.stringify(geminiResponse, null, 2);
+      setAnalysis(resultText);
+    } catch (err: unknown) {
+      let message = "Error analyzing interview";
+      if (
+        typeof err === "object" &&
+        err &&
+        "message" in err &&
+        typeof (err as { message?: unknown }).message === "string"
+      ) {
+        message = (err as { message: string }).message;
+      }
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  }, [recordings, currentQuestion.id]);
+
+  useEffect(() => {
+    if (isComplete) {
+      handleAnalyze();
+    }
+  }, [handleAnalyze, isComplete]);
+
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
+      setCurrentQuestionIndex((prev) => prev - 1);
     }
   };
 
@@ -93,18 +132,40 @@ export const InterviewAgent = () => {
               />
             </svg>
           </div>
-          
+
           <h2 className="text-2xl font-bold text-card-foreground mb-2">
             Interview Complete!
           </h2>
-          
+
           <p className="text-muted-foreground mb-6">
-            Thank you for completing the video interview. Your responses have been recorded successfully.
+            Thank you for completing the video interview. Your responses have
+            been recorded successfully.
           </p>
-          
+
           <div className="space-y-2 text-sm text-muted-foreground">
             <p>Total questions answered: {Object.keys(recordings).length}</p>
-            <p>Total recording time: ~{Object.keys(recordings).length * 2} minutes</p>
+            <p>
+              Total recording time: ~{Object.keys(recordings).length * 2}{" "}
+              minutes
+            </p>
+          </div>
+
+          <div className="mt-4 border rounded max-w-xl mx-auto mt-8">
+            <h2 className="text-lg font-bold mb-2">Interview Agent</h2>
+            <button
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+              onClick={handleAnalyze}
+              disabled={loading}
+            >
+              {loading ? "Analyzing..." : "Analyze Interview (Demo)"}
+            </button>
+            {error && <div className="text-red-600 mt-2">{error}</div>}
+            {analysis && (
+              <div className="mt-4 whitespace-pre-wrap bg-gray-100 text-black p-3 rounded">
+                <strong>Analysis Result:</strong>
+                <div>{analysis}</div>
+              </div>
+            )}
           </div>
         </Card>
       </div>
@@ -116,11 +177,14 @@ export const InterviewAgent = () => {
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold text-foreground">Video Interview</h1>
+          <h1 className="text-3xl font-bold text-foreground">
+            Video Interview
+          </h1>
           <div className="space-y-2">
             <Progress value={progress} className="w-full max-w-md mx-auto" />
             <p className="text-muted-foreground">
-              Question {currentQuestionIndex + 1} of {INTERVIEW_QUESTIONS.length}
+              Question {currentQuestionIndex + 1} of{" "}
+              {INTERVIEW_QUESTIONS.length}
             </p>
           </div>
         </div>
@@ -129,7 +193,10 @@ export const InterviewAgent = () => {
         <Card className="p-6 bg-card border-border">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
+              <Badge
+                variant="secondary"
+                className="bg-secondary text-secondary-foreground"
+              >
                 {currentQuestion.category}
               </Badge>
               {hasRecordingForCurrentQuestion && (
@@ -138,13 +205,14 @@ export const InterviewAgent = () => {
                 </Badge>
               )}
             </div>
-            
+
             <h2 className="text-xl font-semibold text-card-foreground">
               {currentQuestion.question}
             </h2>
-            
+
             <p className="text-muted-foreground">
-              Take your time to think about your response, then press record when you're ready.
+              Take your time to think about your response, then press record
+              when you're ready.
             </p>
           </div>
         </Card>
@@ -167,13 +235,15 @@ export const InterviewAgent = () => {
           >
             Previous
           </Button>
-          
+
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
-              {hasRecordingForCurrentQuestion ? 'Ready to continue' : 'Record your response to continue'}
+              {hasRecordingForCurrentQuestion
+                ? "Ready to continue"
+                : "Record your response to continue"}
             </p>
           </div>
-          
+
           <Button
             onClick={handleNext}
             disabled={!hasRecordingForCurrentQuestion}
@@ -184,7 +254,9 @@ export const InterviewAgent = () => {
                 : "opacity-50 cursor-not-allowed"
             )}
           >
-            {currentQuestionIndex === INTERVIEW_QUESTIONS.length - 1 ? 'Complete' : 'Next'}
+            {currentQuestionIndex === INTERVIEW_QUESTIONS.length - 1
+              ? "Complete"
+              : "Next"}
           </Button>
         </div>
       </div>
