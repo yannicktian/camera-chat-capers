@@ -70,7 +70,7 @@ Analyse l'entretien vidéo pour en ressortir les éléments suivants en JSON uni
 
 export async function analyzeInterview(videoBlob: Blob) {
   // Uncomment this to upload file to Gemini
-  const geminiFile = await deprecatedUploadFileToGemini(videoBlob);
+  // const geminiFile = await deprecatedUploadFileToGemini(videoBlob);
 
   const geminiBlob = await blobToGeminiBlob(videoBlob);
   console.log("geminiBlob", geminiBlob);
@@ -90,12 +90,12 @@ export async function analyzeInterview(videoBlob: Blob) {
         role: "user",
         parts: [
           {
-            // inlineData: geminiBlob,
+            inlineData: geminiBlob,
             // Uncomment this to use the Gemini file data instead of the inline data
-            fileData: {
-              mimeType: geminiFile.mimeType,
-              fileUri: geminiFile.uri,
-            },
+            // fileData: {
+            //   mimeType: geminiFile.mimeType,
+            //   fileUri: geminiFile.uri,
+            // },
           },
         ],
       },
