@@ -16,10 +16,8 @@ export const EvaluationSection = ({
     return Array.from({ length: 5 }, (_, index) => (
       <Star
         key={index}
-        className={`w-8 h-8 transition-all duration-200 ${
-          index < rating 
-            ? "text-yellow-400 fill-yellow-400 drop-shadow-lg scale-110" 
-            : "text-gray-300 hover:text-yellow-200"
+        className={`w-6 h-6 ${
+          index < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
         }`}
       />
     ));
