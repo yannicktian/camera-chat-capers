@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
@@ -89,7 +90,7 @@ export const InterviewAgent = () => {
 
       setAnalysis(resultText);
 
-      navigate("/analysis", { state: { analysis: resultText } });
+      navigate("/analysis", { state: { analysis: evaluationObject } });
     } catch (err: unknown) {
       let message = "Error analyzing interview";
       if (
