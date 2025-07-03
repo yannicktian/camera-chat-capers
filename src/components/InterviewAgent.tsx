@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
@@ -6,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { VideoRecorder } from "./VideoRecorder";
-import { ConfettiAnimation } from "./ConfettiAnimation";
 import { cn } from "@/lib/utils";
 import { analyzeInterview } from "../lib/gemini";
+import { ConfettiAnimation } from "./ConfettiAnimation";
 
 type EvaluationObject = {
   posture_reasoning: string;
@@ -63,7 +62,7 @@ export const InterviewAgent = () => {
     }));
   };
 
-  const handleEnd = () => {
+  const handleNext = () => {
     if (currentQuestionIndex < INTERVIEW_QUESTIONS.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
@@ -135,9 +134,9 @@ export const InterviewAgent = () => {
   if (isComplete) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <ConfettiAnimation 
-          isActive={showConfetti} 
-          onComplete={() => setShowConfetti(false)} 
+        <ConfettiAnimation
+          isActive={showConfetti}
+          onComplete={() => setShowConfetti(false)}
         />
         <Card className="p-8 text-center max-w-md w-full bg-card border-border animate-scale-in">
           <div className="w-16 h-16 bg-success rounded-full flex items-center justify-center mx-auto mb-4">
@@ -161,28 +160,39 @@ export const InterviewAgent = () => {
           </h2>
 
           <p className="text-muted-foreground mb-6">
-            Merci d'avoir réalisé votre entretien. Nous allons maintenant analyser vos réponses
+            Merci d'avoir réalisé votre entretien. Nous allons maintenant
+            analyser vos réponses
           </p>
 
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>Vous avez répondu à {Object.keys(recordings).length} questions</p>
+            <p>
+              Vous avez répondu à {Object.keys(recordings).length} questions
+            </p>
           </div>
 
           <div className="mt-8 border rounded-lg p-6 border-amber-200">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
                 <div className="w-12 h-12 border-4 border-amber-200 border-t-amber-400 rounded-full animate-spin"></div>
-                <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-t-yellow-400 rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '0.8s'}}></div>
+                <div
+                  className="absolute inset-0 w-12 h-12 border-4 border-transparent border-t-yellow-400 rounded-full animate-spin"
+                  style={{
+                    animationDirection: "reverse",
+                    animationDuration: "0.8s",
+                  }}
+                ></div>
               </div>
-              
+
               <div className="text-center">
                 <div className="flex items-center space-x-2 text-amber-300">
                   <span className="text-sm font-medium">
-                    {loading ? "Analyse en cours..." : "Analyse l'entretien (Demo)"}
+                    {loading
+                      ? "Analyse en cours..."
+                      : "Analyse l'entretien (Demo)"}
                   </span>
                 </div>
               </div>
-              
+
               {error && (
                 <div className="text-red-600 bg-red-50 border border-red-200 rounded-lg p-3 text-sm">
                   {error}
@@ -196,16 +206,36 @@ export const InterviewAgent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold text-foreground">
-            Entretien vidéo
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-emerald-50 p-4">
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Header avec illustration */}
+        <div className="text-center space-y-6 pt-8">
+          <div className="relative">
+            <div className="w-24 h-24 bg-gradient-to-br from-orange-300 to-orange-500 rounded-3xl mx-auto mb-6 shadow-lg transform rotate-12 flex items-center justify-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-200 to-orange-400 rounded-2xl flex items-center justify-center transform -rotate-12">
+                <svg
+                  className="w-8 h-8 text-orange-700"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+            Simulation d'entretien
           </h1>
-          <div className="space-y-2">
-            <Progress value={progress} className="w-full max-w-md mx-auto" />
-            <p className="text-muted-foreground">
+
+          <div className="space-y-3">
+            <div className="w-full max-w-md mx-auto bg-white rounded-full p-1 shadow-sm">
+              <div
+                className="h-2 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <p className="text-sm text-gray-500 font-medium">
               Question {currentQuestionIndex + 1} sur{" "}
               {INTERVIEW_QUESTIONS.length}
             </p>
@@ -213,74 +243,79 @@ export const InterviewAgent = () => {
         </div>
 
         {/* Current Question */}
-        <Card className="p-6 bg-card border-border">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Badge
-                variant="secondary"
-                className="bg-secondary text-secondary-foreground"
-              >
-                {currentQuestion.category}
-              </Badge>
-              {hasRecordingForCurrentQuestion && (
-                <Badge className="bg-success text-success-foreground">
-                  Enregistrer ✓
-                </Badge>
-              )}
+        <div className="bg-white rounded-3xl shadow-lg p-8 border border-gray-100">
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="px-4 py-2 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 rounded-full text-sm font-medium">
+                  {currentQuestion.category}
+                </span>
+                {hasRecordingForCurrentQuestion && (
+                  <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium flex items-center gap-1">
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                    </svg>
+                    Enregistré
+                  </span>
+                )}
+              </div>
             </div>
 
-            <h2 className="text-xl font-semibold text-card-foreground">
+            <h2 className="text-2xl font-bold text-gray-800 leading-tight">
               {currentQuestion.question}
             </h2>
-
-            <p className="text-muted-foreground">
-              Prenez le temps de réfléchir à votre réponse,puis appuyez sur
-              "Enregistrer" lorsque vous êtes prêt.
-            </p>
           </div>
-        </Card>
+        </div>
 
         {/* Video Recorder */}
-        <VideoRecorder
-          onRecordingComplete={handleRecordingComplete}
-          isRecording={isRecording}
-          onRecordingStart={handleRecordingStart}
-          onRecordingStop={handleRecordingStop}
-        />
+        <div className="bg-white rounded-3xl shadow-lg overflow-hidden border border-gray-100 pb-4">
+          <VideoRecorder
+            onRecordingComplete={handleRecordingComplete}
+            isRecording={isRecording}
+            onRecordingStart={handleRecordingStart}
+            onRecordingStop={handleRecordingStop}
+          />
+        </div>
 
         {/* Navigation */}
-        <div className="flex flex-col items-center space-y-2">
-          <Button
+        <div className="flex justify-between items-center">
+          <button
             onClick={handlePrevious}
-            variant="outline"
             disabled={currentQuestionIndex === 0}
-            className="px-6"
+            className="px-8 py-3 rounded-2xl border-2 border-gray-200 hover:border-gray-300 disabled:opacity-50 font-medium bg-white text-gray-700 transition-all duration-200"
           >
-            Previous
-          </Button>
+            Précédent
+          </button>
 
-          <Button
-            onClick={handleEnd}
+          <button
+            onClick={handleNext}
             disabled={!hasRecordingForCurrentQuestion}
-            className={cn(
-              "px-6",
+            className={`px-8 py-3 rounded-2xl font-semibold transition-all duration-200 transform ${
               hasRecordingForCurrentQuestion
-                ? "bg-primary hover:bg-primary/90"
-                : "opacity-50 cursor-not-allowed"
-            )}
+                ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            }`}
           >
             {currentQuestionIndex === INTERVIEW_QUESTIONS.length - 1
-              ? "Terminer"
+              ? "Voir mes résultats ! →"
               : "Suivant"}
-          </Button>
+          </button>
+        </div>
 
-          <div className="flex-1 text-center">
-            <p className="text-sm text-muted-foreground text-center">
-              {hasRecordingForCurrentQuestion
-                ? "Prêt à continuer ? "
-                : "Enregistrez votre réponse pour continuer"}
-            </p>
+        <div className="space-y-3 text-center">
+          <div className="w-full max-w-md mx-auto bg-white rounded-full p-1 shadow-sm">
+            <div
+              className="h-2 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
           </div>
+          <p className="text-sm text-gray-500 font-medium">
+            Question {currentQuestionIndex + 1} sur {INTERVIEW_QUESTIONS.length}
+          </p>
         </div>
       </div>
     </div>
