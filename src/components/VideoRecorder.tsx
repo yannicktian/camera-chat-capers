@@ -129,7 +129,7 @@ export const VideoRecorder = ({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 pb-4">
       <Card className="overflow-hidden bg-card border-border">
         <div className="relative aspect-video bg-secondary">
           <video
