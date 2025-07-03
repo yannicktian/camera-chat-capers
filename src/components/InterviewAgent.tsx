@@ -161,46 +161,27 @@ export const InterviewAgent = () => {
           </h2>
 
           <p className="text-muted-foreground mb-6">
-            Merci d'avoir réalisé votre entretien. Votre réponse a été
-            enregistrée avec succès.
+            Merci d'avoir réalisé votre entretien. Nous allons maintenant analyser vos réponses
           </p>
 
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>Total questions answered: {Object.keys(recordings).length}</p>
-            <p>
-              Durée totale d'enregistrement: ~
-              {Object.keys(recordings).length * 2} minutes
-            </p>
+            <p>Vous avez répondu à {Object.keys(recordings).length} questions</p>
           </div>
 
-          <div className="mt-8 border rounded-lg p-6 bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-200">
+          <div className="mt-8 border rounded-lg p-6 border-amber-200">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
-                <div className="w-12 h-12 border-4 border-amber-200 border-t-amber-500 rounded-full animate-spin"></div>
+                <div className="w-12 h-12 border-4 border-amber-200 border-t-amber-400 rounded-full animate-spin"></div>
                 <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-t-yellow-400 rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '0.8s'}}></div>
               </div>
               
               <div className="text-center">
-                <h3 className="text-lg font-semibold text-amber-800 mb-2">Agent d'entretien</h3>
-                <div className="flex items-center space-x-2 text-amber-700">
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                  </div>
+                <div className="flex items-center space-x-2 text-amber-300">
                   <span className="text-sm font-medium">
                     {loading ? "Analyse en cours..." : "Analyse l'entretien (Demo)"}
                   </span>
                 </div>
               </div>
-
-              <button
-                className="bg-gradient-to-r from-amber-500 to-yellow-500 text-white px-6 py-3 rounded-lg hover:from-amber-600 hover:to-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg transition-all duration-200 transform hover:scale-105"
-                onClick={handleAnalyze}
-                disabled={loading}
-              >
-                {loading ? "Analyse en cours..." : "Analyse l'entretien (Demo)"}
-              </button>
               
               {error && (
                 <div className="text-red-600 bg-red-50 border border-red-200 rounded-lg p-3 text-sm">
