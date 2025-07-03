@@ -40,9 +40,9 @@ export const VideoRecorder = ({
         videoRef.current.srcObject = mediaStream;
       }
     } catch (err) {
-      console.error("Error accessing camera:", err);
+      console.error("Erreur d’accès à la caméra :", err);
       setError(
-        "Camera access denied. Please allow camera permissions to record your response."
+        "Accès à la caméra refusé. Veuillez autoriser l’accès à la caméra pour enregistrer votre réponse."
       );
     }
   }, []);
@@ -101,7 +101,7 @@ export const VideoRecorder = ({
         <Camera className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
         <p className="text-card-foreground mb-4">{error}</p>
         <Button onClick={startCamera} variant="outline">
-          Try Again
+          Réessayer
         </Button>
       </Card>
     );
@@ -112,16 +112,16 @@ export const VideoRecorder = ({
       <Card className="p-6 text-center bg-card border-border">
         <Camera className="mx-auto mb-4 h-12 w-12 text-primary" />
         <h3 className="text-lg font-semibold text-card-foreground mb-2">
-          Camera Access Required
+          Accès à la caméra requis
         </h3>
         <p className="text-muted-foreground mb-4">
-          We need access to your camera to record your video response.
+          Nous avons besoin de votre caméra pour enregistrer votre réponse vidéo.
         </p>
         <Button
           onClick={startCamera}
           className="bg-primary hover:bg-primary/90"
         >
-          Enable Camera
+          Activer la caméra
         </Button>
       </Card>
     );
@@ -137,12 +137,13 @@ export const VideoRecorder = ({
             muted
             playsInline
             className="w-full h-full object-cover"
+            style={{ transform: "scaleX(-1)" }}
           />
 
           {isRecording && (
             <div className="absolute top-4 left-4 flex items-center gap-2 bg-recording/90 text-recording-foreground px-3 py-1 rounded-full">
               <div className="w-2 h-2 bg-recording-foreground rounded-full animate-pulse" />
-              <span className="text-sm font-medium">Recording</span>
+              <span className="text-sm font-medium">Enregistrement</span>
             </div>
           )}
         </div>
@@ -165,7 +166,7 @@ export const VideoRecorder = ({
             <Video className="h-6 w-6" />
           )}
         </Button>
-
+          
         {hasPermission && (
           <Button
             onClick={stopCamera}
@@ -173,7 +174,7 @@ export const VideoRecorder = ({
             size="lg"
             className="h-16 px-6"
           >
-            Stop Camera
+            Arrêter la caméra
           </Button>
         )}
       </div>
