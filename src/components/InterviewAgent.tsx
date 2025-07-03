@@ -138,7 +138,7 @@ export const InterviewAgent = () => {
           isActive={showConfetti}
           onComplete={() => setShowConfetti(false)}
         />
-        
+
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Header avec illustration */}
           <div className="text-center space-y-6 pt-8">
@@ -194,9 +194,7 @@ export const InterviewAgent = () => {
 
               <div className="text-center">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  {loading
-                    ? "Analyse en cours..."
-                    : "Analyse de l'entretien"}
+                  {loading ? "Analyse en cours..." : "Analyse de l'entretien"}
                 </h3>
                 <p className="text-gray-600">
                   Veuillez patienter pendant que nous analysons vos réponses...
@@ -234,9 +232,12 @@ export const InterviewAgent = () => {
             </div>
           </div>
 
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          <h1 className="text-4xl font-bold text-gray-800">
             Simulation d'entretien
           </h1>
+          <p className="text-sm text-gray-500 font-medium !mt-0">
+            Chargé de clientèle - La Poste - Aix-en-Provence
+          </p>
 
           <div className="space-y-3">
             <div className="w-full max-w-md mx-auto bg-white rounded-full p-1 shadow-sm">
@@ -282,7 +283,7 @@ export const InterviewAgent = () => {
         </div>
 
         {/* Video Recorder */}
-        <div className="bg-white rounded-3xl shadow-lg overflow-hidden border border-gray-100 pb-4">
+        <div className="bg-white rounded-3xl shadow-lg overflow-hidden border border-gray-100">
           <VideoRecorder
             onRecordingComplete={handleRecordingComplete}
             isRecording={isRecording}
