@@ -13,11 +13,11 @@ const INTERVIEW_QUESTIONS = [
     question: "Tell me about yourself and your background.",
     category: "Introduction",
   },
-  {
-    id: 2,
-    question: "What interests you most about this opportunity?",
-    category: "Motivation",
-  },
+  // {
+  //   id: 2,
+  //   question: "What interests you most about this opportunity?",
+  //   category: "Motivation",
+  // },
   // {
   //   id: 3,
   //   question:
@@ -77,6 +77,8 @@ export const InterviewAgent = () => {
       const geminiResponse = await analyzeInterview(recordings);
       console.log(geminiResponse);
       const resultText = JSON.stringify(geminiResponse, null, 2);
+      const geminiEvaluationText = geminiResponse.candidates[0].content.parts[0].text;
+
       setAnalysis(resultText);
     } catch (err: unknown) {
       let message = "Error analyzing interview";
