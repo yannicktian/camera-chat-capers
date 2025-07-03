@@ -133,49 +133,58 @@ export const InterviewAgent = () => {
 
   if (isComplete) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-emerald-50 p-4">
         <ConfettiAnimation
           isActive={showConfetti}
           onComplete={() => setShowConfetti(false)}
         />
-        <Card className="p-8 text-center max-w-md w-full bg-card border-border animate-scale-in">
-          <div className="w-16 h-16 bg-success rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg
-              className="w-8 h-8 text-success-foreground"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
+        
+        <div className="max-w-4xl mx-auto space-y-8">
+          {/* Header avec illustration */}
+          <div className="text-center space-y-6 pt-8">
+            <div className="relative">
+              <div className="w-24 h-24 bg-gradient-to-br from-emerald-300 to-emerald-500 rounded-3xl mx-auto mb-6 shadow-lg transform rotate-12 flex items-center justify-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-emerald-200 to-emerald-400 rounded-2xl flex items-center justify-center transform -rotate-12">
+                  <svg
+                    className="w-8 h-8 text-emerald-700"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
 
-          <h2 className="text-2xl font-bold text-card-foreground mb-2">
-            Entretien terminé !
-          </h2>
+            <h2 className="text-4xl font-bold text-gray-800 mb-2">
+              Entretien terminé !
+            </h2>
 
-          <p className="text-muted-foreground mb-6">
-            Merci d'avoir réalisé votre entretien. Nous allons maintenant
-            analyser vos réponses
-          </p>
-
-          <div className="space-y-2 text-sm text-muted-foreground">
-            <p>
-              Vous avez répondu à {Object.keys(recordings).length} questions
+            <p className="text-gray-600 text-lg mb-6">
+              Merci d'avoir réalisé votre entretien. Nous allons maintenant
+              analyser vos réponses
             </p>
+
+            <div className="space-y-2 text-sm text-gray-500 font-medium">
+              <p>
+                Vous avez répondu à {Object.keys(recordings).length} questions
+              </p>
+            </div>
           </div>
 
-          <div className="mt-8 border rounded-lg p-6 border-amber-200">
-            <div className="flex flex-col items-center space-y-4">
+          {/* Section d'analyse */}
+          <div className="bg-white rounded-3xl shadow-lg p-8 border border-gray-100">
+            <div className="flex flex-col items-center space-y-6">
               <div className="relative">
-                <div className="w-12 h-12 border-4 border-amber-200 border-t-amber-400 rounded-full animate-spin"></div>
+                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div>
                 <div
-                  className="absolute inset-0 w-12 h-12 border-4 border-transparent border-t-yellow-400 rounded-full animate-spin"
+                  className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-emerald-500 rounded-full animate-spin"
                   style={{
                     animationDirection: "reverse",
                     animationDuration: "0.8s",
@@ -184,23 +193,24 @@ export const InterviewAgent = () => {
               </div>
 
               <div className="text-center">
-                <div className="flex items-center space-x-2 text-amber-300">
-                  <span className="text-sm font-medium">
-                    {loading
-                      ? "Analyse en cours..."
-                      : "Analyse l'entretien (Demo)"}
-                  </span>
-                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                  {loading
+                    ? "Analyse en cours..."
+                    : "Analyse de l'entretien"}
+                </h3>
+                <p className="text-gray-600">
+                  Veuillez patienter pendant que nous analysons vos réponses...
+                </p>
               </div>
 
               {error && (
-                <div className="text-red-600 bg-red-50 border border-red-200 rounded-lg p-3 text-sm">
-                  {error}
+                <div className="bg-red-50 border border-red-200 rounded-2xl p-4 text-center">
+                  <p className="text-red-700 font-medium">{error}</p>
                 </div>
               )}
             </div>
           </div>
-        </Card>
+        </div>
       </div>
     );
   }
