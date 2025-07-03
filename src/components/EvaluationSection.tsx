@@ -16,17 +16,11 @@ export const EvaluationSection = ({
     return Array.from({ length: 5 }, (_, index) => (
       <Star
         key={index}
-        className={`w-6 h-6 transition-all duration-300 ${
-          index < rating 
-            ? "text-transparent fill-current drop-shadow-lg transform scale-110" 
-            : "text-gray-300 hover:text-gray-400"
+        className={`w-6 h-6 ${
+          index < rating
+            ? "text-blue-400 fill-blue-400"
+            : "text-gray-300"
         }`}
-        style={index < rating ? {
-          background: 'linear-gradient(135deg, #3b82f6, #10b981)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
-        } : {}}
       />
     ));
   };
