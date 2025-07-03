@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { VideoRecorder } from "./VideoRecorder";
+import { ConfettiAnimation } from "./ConfettiAnimation";
 import { cn } from "@/lib/utils";
 import { analyzeInterview } from "../lib/gemini";
 
@@ -44,6 +45,7 @@ export const InterviewAgent = () => {
   const [analysis, setAnalysis] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const navigate = useNavigate();
 
@@ -66,6 +68,7 @@ export const InterviewAgent = () => {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       setIsComplete(true);
+      setShowConfetti(true);
     }
   };
 
@@ -132,6 +135,10 @@ export const InterviewAgent = () => {
   if (isComplete) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <ConfettiAnimation 
+          isActive={showConfetti} 
+          onComplete={() => setShowConfetti(false)} 
+        />
         <Card className="p-8 text-center max-w-md w-full bg-card border-border animate-scale-in">
           <div className="w-16 h-16 bg-success rounded-full flex items-center justify-center mx-auto mb-4">
             <svg
