@@ -13,11 +13,11 @@ const INTERVIEW_QUESTIONS = [
     question: "Tell me about yourself and your background.",
     category: "Introduction",
   },
-  // {
-  //   id: 2,
-  //   question: "What interests you most about this opportunity?",
-  //   category: "Motivation",
-  // },
+  {
+    id: 2,
+    question: "What interests you most about this opportunity?",
+    category: "Motivation",
+  },
   // {
   //   id: 3,
   //   question:
@@ -39,7 +39,7 @@ const INTERVIEW_QUESTIONS = [
 export const InterviewAgent = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
-  const [recordings, setRecordings] = useState<{ [key: number]: Blob }>({});
+  const [recordings, setRecordings] = useState<{ [key: number]: {file: Blob, question: string} }>({});
   const [isComplete, setIsComplete] = useState(false);
   const [analysis, setAnalysis] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -52,7 +52,10 @@ export const InterviewAgent = () => {
   const handleRecordingComplete = (videoBlob: Blob) => {
     setRecordings((prev) => ({
       ...prev,
-      [currentQuestion.id]: videoBlob,
+      [currentQuestion.id]: {
+        file: videoBlob,
+        question: currentQuestion.question,
+      },
     }));
   };
 
@@ -71,7 +74,7 @@ export const InterviewAgent = () => {
     try {
       const videoBlob = recordings[currentQuestion.id];
       console.log(videoBlob);
-      const geminiResponse = await analyzeInterview(videoBlob);
+      const geminiResponse = await analyzeInterview(recordings);
       console.log(geminiResponse);
       const resultText = JSON.stringify(geminiResponse, null, 2);
       setAnalysis(resultText);

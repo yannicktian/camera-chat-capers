@@ -68,38 +68,31 @@ Analyse l'entretien vidéo pour en ressortir les éléments suivants en JSON uni
 	"reponse_conseil": <Basé sur tes analyses et sur la note donnée, donne quelques conseils courts d'amélioration de la réponse du candidat.>,
 }`;
 
-export async function analyzeInterview(videoBlob: Blob) {
+export async function analyzeInterview(videoBlobs: {
+  [key: number]: { file: Blob; question: string };
+}) {
   // Uncomment this to upload file to Gemini
   // const geminiFile = await deprecatedUploadFileToGemini(videoBlob);
 
-  const geminiBlob = await blobToGeminiBlob(videoBlob);
-  console.log("geminiBlob", geminiBlob);
+  const contents = [];
+
+  for (const key in videoBlobs) {
+    const { file, question } = videoBlobs[key];
+    contents.push({ role: "model", parts: [{ text: question }] });
+    const geminiBlob = await blobToGeminiBlob(file);
+    contents.push({
+      role: "user",
+      parts: [{ inlineData: geminiBlob }],
+    });
+  }
+
+  console.log(contents);
+
+  // const geminiBlob = await blobToGeminiBlob(videoBlob);
   // Call Gemini with the prompt and video file
   const response = await client.models.generateContent({
     model: "gemini-2.5-flash",
-    contents: [
-      {
-        role: "model",
-        parts: [
-          {
-            text: "Pouvez-vous vous présenter et nous parler de votre parcours ?",
-          },
-        ],
-      },
-      {
-        role: "user",
-        parts: [
-          {
-            inlineData: geminiBlob,
-            // Uncomment this to use the Gemini file data instead of the inline data
-            // fileData: {
-            //   mimeType: geminiFile.mimeType,
-            //   fileUri: geminiFile.uri,
-            // },
-          },
-        ],
-      },
-    ],
+    contents,
     config: {
       systemInstruction,
       temperature: 0.5,
