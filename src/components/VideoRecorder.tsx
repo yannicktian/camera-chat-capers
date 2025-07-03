@@ -115,7 +115,8 @@ export const VideoRecorder = ({
           Accès à la caméra requis
         </h3>
         <p className="text-muted-foreground mb-4">
-          Nous avons besoin de votre caméra pour enregistrer votre réponse vidéo.
+          Nous avons besoin de votre caméra pour enregistrer votre réponse
+          vidéo.
         </p>
         <Button
           onClick={startCamera}
@@ -137,7 +138,7 @@ export const VideoRecorder = ({
             muted
             playsInline
             className="w-full h-full object-cover"
-            style={{ transform: "scaleX(-1)" }}
+            // style={{ transform: "scaleX(-1)" }}
           />
 
           {isRecording && (
@@ -166,17 +167,6 @@ export const VideoRecorder = ({
             <Video className="h-6 w-6" />
           )}
         </Button>
-          
-        {hasPermission && (
-          <Button
-            onClick={stopCamera}
-            variant="outline"
-            size="lg"
-            className="h-16 px-6"
-          >
-            Arrêter la caméra
-          </Button>
-        )}
       </div>
     </div>
   );
