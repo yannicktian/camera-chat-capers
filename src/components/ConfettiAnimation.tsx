@@ -46,7 +46,7 @@ export const ConfettiAnimation = ({
     ];
 
     // Create confetti particles
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 1000; i++) {
       confetti.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height - canvas.height,
@@ -61,7 +61,7 @@ export const ConfettiAnimation = ({
 
     let animationId: number;
     const startTime = Date.now();
-    const duration = 4000; // 4 seconds
+    const duration = 5000; // 4 seconds
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
