@@ -28,18 +28,8 @@ const Welcome = () => {
             size="lg"
             className="px-8 py-3 text-lg font-semibold bg-primary hover:bg-primary/90 transform hover:scale-105 transition-all duration-200 shadow-lg"
           >
-            Start Interview
+            Démarrer mon entretien
           </Button>
-        </div>
-
-        {/* Welcome Text */}
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-            Welcome to Camera Chat Capers
-          </h1>
-          <p className="text-base text-muted-foreground max-w-sm mx-auto">
-            Get ready for your interview experience. Watch the introduction video above and click the button when you're ready to begin.
-          </p>
         </div>
       </div>
     </div>
