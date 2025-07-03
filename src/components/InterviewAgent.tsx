@@ -166,22 +166,41 @@ export const InterviewAgent = () => {
             </p>
           </div>
 
-          <div className="mt-4 border rounded max-w-xl mx-auto mt-8">
-            <h2 className="text-lg font-bold mb-2">Agent d'entretien</h2>
-            <button
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-              onClick={handleAnalyze}
-              disabled={loading}
-            >
-              {loading ? "Analyse en cours..." : "Analyse l'entretien (Demo)"}
-            </button>
-            {error && <div className="text-red-600 mt-2">{error}</div>}
-            {analysis && (
-              <div className="mt-4 whitespace-pre-wrap bg-gray-100 text-black p-3 rounded">
-                <strong>Résultat de l'analyse:</strong>
-                <div>{analysis}</div>
+          <div className="mt-8 border rounded-lg p-6 bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-200">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="relative">
+                <div className="w-12 h-12 border-4 border-amber-200 border-t-amber-500 rounded-full animate-spin"></div>
+                <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-t-yellow-400 rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '0.8s'}}></div>
               </div>
-            )}
+              
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">Agent d'entretien</h3>
+                <div className="flex items-center space-x-2 text-amber-700">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  </div>
+                  <span className="text-sm font-medium">
+                    {loading ? "Analyse en cours..." : "Analyse l'entretien (Demo)"}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                className="bg-gradient-to-r from-amber-500 to-yellow-500 text-white px-6 py-3 rounded-lg hover:from-amber-600 hover:to-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg transition-all duration-200 transform hover:scale-105"
+                onClick={handleAnalyze}
+                disabled={loading}
+              >
+                {loading ? "Analyse en cours..." : "Analyse l'entretien (Demo)"}
+              </button>
+              
+              {error && (
+                <div className="text-red-600 bg-red-50 border border-red-200 rounded-lg p-3 text-sm">
+                  {error}
+                </div>
+              )}
+            </div>
           </div>
         </Card>
       </div>
