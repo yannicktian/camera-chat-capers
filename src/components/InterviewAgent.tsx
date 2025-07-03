@@ -7,6 +7,19 @@ import { VideoRecorder } from "./VideoRecorder";
 import { cn } from "@/lib/utils";
 import { analyzeInterview } from "../lib/gemini";
 
+
+type EvaluationObject = {
+  posture_reasoning: string;
+  posture_note: number;
+  posture_conseil: string;
+  elocution_reasoning: string;
+  elocution_note: number;
+  elocution_conseil: string;
+  reponse_reasoning: string;
+  reponse_note: number;
+  reponse_conseil: string;
+};
+
 const INTERVIEW_QUESTIONS = [
   {
     id: 1,
@@ -78,6 +91,8 @@ export const InterviewAgent = () => {
       console.log(geminiResponse);
       const resultText = JSON.stringify(geminiResponse, null, 2);
       const geminiEvaluationText = geminiResponse.candidates[0].content.parts[0].text;
+      const parsedEvaluationText = geminiEvaluationText.replace(/^```json|```$/g, "");
+      const evaluationObject: EvaluationObject = JSON.parse(parsedEvaluationText);
 
       setAnalysis(resultText);
     } catch (err: unknown) {
