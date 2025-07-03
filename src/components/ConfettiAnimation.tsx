@@ -1,19 +1,21 @@
-
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 interface ConfettiAnimationProps {
   isActive: boolean;
   onComplete?: () => void;
 }
 
-export const ConfettiAnimation = ({ isActive, onComplete }: ConfettiAnimationProps) => {
+export const ConfettiAnimation = ({
+  isActive,
+  onComplete,
+}: ConfettiAnimationProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     if (!isActive || !canvasRef.current) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Set canvas size
@@ -33,7 +35,15 @@ export const ConfettiAnimation = ({ isActive, onComplete }: ConfettiAnimationPro
     }> = [];
 
     // Colors for confetti
-    const colors = ['#FFD700', '#FFA500', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
+    const colors = [
+      "#FFD700",
+      "#FFA500",
+      "#FF6B6B",
+      "#4ECDC4",
+      "#45B7D1",
+      "#96CEB4",
+      "#FFEAA7",
+    ];
 
     // Create confetti particles
     for (let i = 0; i < 150; i++) {
@@ -45,17 +55,17 @@ export const ConfettiAnimation = ({ isActive, onComplete }: ConfettiAnimationPro
         color: colors[Math.floor(Math.random() * colors.length)],
         size: Math.random() * 4 + 2,
         rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 10
+        rotationSpeed: (Math.random() - 0.5) * 10,
       });
     }
 
     let animationId: number;
-    let startTime = Date.now();
+    const startTime = Date.now();
     const duration = 4000; // 4 seconds
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
-      
+
       if (elapsed > duration) {
         onComplete?.();
         return;
@@ -83,7 +93,12 @@ export const ConfettiAnimation = ({ isActive, onComplete }: ConfettiAnimationPro
         ctx.translate(particle.x, particle.y);
         ctx.rotate((particle.rotation * Math.PI) / 180);
         ctx.fillStyle = particle.color;
-        ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
+        ctx.fillRect(
+          -particle.size / 2,
+          -particle.size / 2,
+          particle.size,
+          particle.size
+        );
         ctx.restore();
       });
 
