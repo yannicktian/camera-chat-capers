@@ -25,12 +25,7 @@ export const EvaluationSection = ({
 
   return (
     <div className="bg-white rounded-3xl shadow-lg p-8 border border-gray-100">
-      <div className="flex items-center gap-4 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-          <span className="text-white font-bold text-lg">{note}</span>
-        </div>
-        <h3 className="text-2xl font-bold text-gray-800 capitalize">{title}</h3>
-      </div>
+      <h3 className="text-2xl font-bold text-gray-800 capitalize mb-6">{title}</h3>
       
       <div className="flex items-center gap-3 mb-6">
         <div className="flex items-center gap-1">
