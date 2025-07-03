@@ -24,13 +24,28 @@ export const EvaluationSection = ({
   };
 
   return (
-    <Card className="p-6 mb-6">
-      <h3 className="text-xl font-semibold mb-4 capitalize">{title}</h3>
-      <div className="flex items-center gap-2 mb-4">
-        {renderStars(note)}
-        <span className="ml-2 text-sm text-muted-foreground">{note}/5</span>
+    <div className="bg-white rounded-3xl shadow-lg p-8 border border-gray-100">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <span className="text-white font-bold text-lg">{note}</span>
+        </div>
+        <h3 className="text-2xl font-bold text-gray-800 capitalize">{title}</h3>
       </div>
-      <p className="text-muted-foreground leading-relaxed">{conseil}</p>
-    </Card>
+      
+      <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-1">
+          {renderStars(note)}
+        </div>
+        <span className="text-lg font-semibold text-gray-600">{note}/5</span>
+      </div>
+      
+      <div className="bg-gradient-to-r from-blue-50 to-emerald-50 rounded-2xl p-6 border border-blue-100">
+        <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+          Conseil personnalisé
+        </h4>
+        <p className="text-gray-700 leading-relaxed">{conseil}</p>
+      </div>
+    </div>
   );
 };
